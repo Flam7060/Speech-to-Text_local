@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кнопка с комбинированным эффектом</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #89CFF0, #00BFFF);
+            margin: 0;
+        }
+        .button-container {
+            position: relative;
+            display: inline-block;
+        }
+        .button {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            overflow: hidden;
+            transition: background 0.3s ease;
+            z-index: 1;
+        }
+        .button.active {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        /* Жидкий эффект до нажатия */
+        .pre-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: liquidEffect 4s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes liquidEffect {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1) skew(0deg, 0deg);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translate(-50%, -50%) scale(1.1) skew(6deg, 4deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(0.9) skew(-6deg, -4deg);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translate(-50%, -50%) scale(1.2) skew(4deg, -4deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* Эффект при нажатии */
+        .effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0));
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Волны при нажатии */
+        .wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff6b6b, #feca57, #1dd1a1, #5f27cd, #ff6b6b);
+            opacity: 0.6;
+            animation: wave-animation 6s infinite ease-in-out;
+        }
+
+        .wave:nth-child(2) {
+            animation-duration: 8s;
+            opacity: 0.5;
+            transform: scale(1.2);
+        }
+
+        .wave:nth-child(3) {
+            animation-duration: 10s;
+            opacity: 0.4;
+            transform: scale(1.5);
+        }
+
+        @keyframes wave-animation {
+            0% {
+                clip-path: polygon(50% 0%, 61% 35%, 100% 35%, 75% 57%, 83% 100%, 50% 80%, 20% 100%, 30% 57%, 0% 35%, 39% 35%);
+                transform: rotate(0deg);
+            }
+            50% {
+                clip-path: polygon(50% 10%, 70% 35%, 100% 55%, 80% 80%, 50% 90%, 30% 80%, 0% 55%, 30% 35%, 20% 10%, 50% 0%);
+                transform: rotate(180deg);
+            }
+            100% {
+                clip-path: polygon(50% 0%, 61% 35%, 100% 35%, 75% 57%, 83% 100%, 50% 80%, 20% 100%, 30% 57%, 0% 35%, 39% 35%);
+                transform: rotate(360deg);
+            }
+        }
+
+        .button.active ~ .effect {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .button.active ~ .pre-effect {
+            display: none;
+        }
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button" id="recordButton">
+            <span class="icon">&#128249;</span> <!-- Иконка микрофона -->
+        </button>
+        <div class="pre-effect"></div> <!-- Эффект до нажатия -->
+        <div class="effect">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div> <!-- Эффект с волнами при нажатии -->
+    </div>
+
+    <script>
+        const button = document.getElementById('recordButton');
+        let isActive = false;
+
+        button.addEventListener('click', () => {
+            isActive = !isActive;
+            button.classList.toggle('active', isActive);
+        });
+    </script>
+</body>
+</html>
