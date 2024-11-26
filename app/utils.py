@@ -47,37 +47,6 @@ async def validate_file(file: UploadFile) -> None:
         )
 
 
-def task_exists(key: str, file_name: str) -> bool:
-    """
-    Проверяет, существует ли запись с заданным именем файла для данного ключа в Redis.
-
-    :param key: Уникальный ключ пользователя.
-    :param file_name: Имя файла.
-    :return: True, если запись существует, иначе False.
-    """
-
-    existing_tasks = R.lrange(key, 0, -1)
-
-    # Проверяем, если файл с таким же именем уже существует
-    for task_json in existing_tasks:
-        task_data = loads(task_json)
-        if task_data['file_name'] == file_name:
-            return True
-
-    return False
-
-
-async def check_task_existence(token: str, filename: str) -> None:
-    """
-    Проверяет, существует ли задача для данного токена и имени файла.
-    """
-    if task_exists(token, filename):
-        raise HTTPException(
-            status_code=400,
-            detail=f"File with name '{
-                filename}' already exists for this token."
-        )
-
 
 async def convert_to_wav(audio_file: UploadFile) -> str:
     """

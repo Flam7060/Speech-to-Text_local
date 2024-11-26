@@ -70,45 +70,6 @@ def get_text(task_id: str):
         case 'PENDING':
             return {"status": "Pending"}
         case 'SUCCESS':
-            return {"status": "Success", "result": task_result.result}
+            return {"status": "Success", "resul t": task_result.result}
         case _:
             return {"status": task_result.state}
-
-
-async def get_history(key: str) -> list:
-    """
-    Возвращает все задачи пользователя с заданным ключом в Redis.
-
-    :param key: Уникальный ключ пользователя.
-    :return: Список задач.
-    """
-    try:
-        tasks = R.lrange(key, 0, -1)
-        print(tasks)
-
-        # Проверяем, что tasks не пустой
-        if not tasks:
-            return []
-
-        # Попытка десериализовать задачи
-        return [loads(task) for task in tasks]
-
-    except JSONDecodeError as e:
-        print(f"Ошибка декодирования JSON: {e}")
-        return []
-    except RedisError as e:
-        print(f"Ошибка работы с Redis: {e}")
-        return []
-
-
-def add_task(key: str, file_name: str, task_id: str):
-    """
-    Добавляет запись задачи в Redis.
-
-    :param key: Уникальный ключ пользователя.
-    :param file_name: Имя файла.
-    :param task_id: Идентификатор задачи.
-    """
-    data = dumps({'file_name': file_name, 'task_id': task_id})
-    R.rpush(f'tasks_{key}', data)
-    R.expire(key, 24 * 60 * 60)

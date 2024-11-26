@@ -1,19 +1,24 @@
-
-from fastapi import Query
+from pydantic import BaseModel, Field
 from typing import Optional
-from pydantic import BaseModel
+
+
+
+from pydantic import BaseModel, Field
+from typing import Optional
+
 
 
 class TranscriptionRequestParams(BaseModel):
-    token: str = Query(...,
-                       description="Уникальный токен пользователя для идентификации запросов.")
-    model: str = Query(
-        ...,
+    token: str = Field(..., description="Уникальный токен пользователя для идентификации запросов.")
+    model: str = Field(..., 
+        description="Чем больше модель, тем дольше обрабатывается аудиофайл. Возможные модели: 'tiny', 'base', 'small', 'medium'.",
         enum=["tiny", "base", "small", "medium"],
-        description="Чем больше модель, тем дольше обрабатывается аудиофайл."
+        example="small"  # Пример модели
     )
-    language: Optional[str] = Query(
+    language: Optional[str] = Field(
         None,
+        description="Правильный выбор языка ускоряет процесс обработки аудиофайла.",
         enum=["ru", "en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko"],
-        description="Правильный выбор языка ускоряет процесс обработки аудиофайла."
+        example="en"  # Пример языка
     )
+

@@ -2,7 +2,7 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import stt_router as audio
+from routers import polling as audio
 
 
 app = FastAPI(
