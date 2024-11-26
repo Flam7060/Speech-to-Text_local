@@ -11,11 +11,15 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
     command: uvicorn main:app --host 0.0.0.0 --port 8000
+    mem_limit: 16g  # Ограничение памяти, например 16 ГБ
+    memswap_limit: 32g  # Сумма основной памяти и swap памяти
 
   redis:
     image: redis:7.0
     ports:
       - "6379:6379"
+    mem_limit: 16g
+    memswap_limit: 32g
 
   celery:
     build:
@@ -23,6 +27,8 @@ services:
     command: celery -A services.stt_service worker --loglevel=info 
     volumes:
       - ./app:/app
+    mem_limit: 16g
+    memswap_limit: 32g
 
   flower:
     build:
@@ -39,3 +45,5 @@ services:
     depends_on:
       - redis
       - celery
+    mem_limit: 16g
+    memswap_limit: 32g
