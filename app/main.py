@@ -2,8 +2,8 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import stt_router as audio
-from app.routers import frontend_router as front
+from routers import stt_router as audio
+
 
 app = FastAPI(
     title="Auth Service",
@@ -22,13 +22,9 @@ app.add_middleware(
 
 app.include_router(audio.router, prefix="/audio-transcription",
                    tags=["Audio to Text"])
-app.include_router(front.router)
 
 
-app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
-
-
-@app.get("/status")
+@app.get("/")
 async def root():
     return {"message": "Service is running"}
 

@@ -1,8 +1,8 @@
 
 from fastapi import APIRouter, Depends, File, UploadFile
-from app.schemas.stt_schemas import TranscriptionRequestParams
-from app.services.stt_service import transcribe_audio, get_text, add_task, get_history
-from app.utils import validate_file, check_task_existence, convert_to_wav
+from schemas.stt_schemas import TranscriptionRequestParams
+from services.stt_service import transcribe_audio, get_text, add_task, get_history
+from utils import validate_file, check_task_existence, convert_to_wav
 router = APIRouter()
 
 

@@ -8,7 +8,7 @@ from uuid import uuid4
 from pydub import AudioSegment
 from redis import Redis, RedisError
 
-R = Redis(host="localhost", port=6379, decode_responses=True, db=0)
+R = Redis(host="redis", port=6379, decode_responses=True, db=0)
 
 
 ALLOWED_AUDIO_MIME_TYPES = {
@@ -96,11 +96,14 @@ async def convert_to_wav(audio_file: UploadFile) -> str:
         Exception: В случае возникновения ошибки.   
 
     """
+    
     # Создание уникального идентификатора
+    
     file_id = str(uuid4())
-    file_location = f'app/audio/{file_id}'
+    directory = "audio"
+    os.makedirs(directory, exist_ok=True)
+    file_location = f'{directory}/{file_id}'
     wav_file_location = f'{file_location}.wav'
-
     try:
         async with aio_open(file_location, 'wb') as f:
             while chunk := await audio_file.read(1024 * 1024):  # Чтение по 1MB

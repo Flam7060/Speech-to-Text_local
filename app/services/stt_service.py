@@ -7,15 +7,16 @@ from celery.result import AsyncResult
 from redis import Redis, RedisError
 
 
-from app.utils import split_audio
+from utils import split_audio
 
 celery_app = Celery(
     "tasks",
-    broker="redis://localhost:6379/0",
-    backend="redis://localhost:6379/0"
+    broker="redis://redis:6379/0",
+    backend="redis://redis:6379/0"
 )
 
-R = Redis(host="localhost", port=6379, decode_responses=True, db=0)
+
+R = Redis(host="redis", port=6379, decode_responses=True, db=0)
 
 
 @celery_app.task
